@@ -1,4 +1,5 @@
 /* InterviewerListItem.js */
+
 import React from "react";
 import "components/InterviewerListItem.scss";
 
@@ -9,7 +10,7 @@ export default function InterviewerListItem(props) {
   }
 
   return (
-    <li className={classNames.join(" ")} onClick={() => props.setInterviewer(props.id)}>
+    <li className={classNames.join(" ")} onClick={props.setInterviewer}>
       <img
         className="interviewers__item-image"
         src={props.avatar}
