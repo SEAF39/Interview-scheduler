@@ -4,7 +4,11 @@ import "./styles.scss";
 
 
 const Appointment = (props) => {
-  return <article className="appointment"></article>;
+  return (
+    <article className="appointment">
+      {props.time}
+    </article>
+  );
 };
 
 export default Appointment;
