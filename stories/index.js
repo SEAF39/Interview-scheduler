@@ -15,6 +15,7 @@ import Confirm from "components/Appointment/Confirm";
 import Status from "components/Appointment/Status";
 import Error from "components/Appointment/Error";
 import Show from "components/Appointment/Show";
+import Form from "components/Appointment/Form";
 
 import "index.scss";
 
@@ -160,7 +161,7 @@ storiesOf("Button", module)
   .add("Show", () => (
     <Show
       student="Lydia Miller-Jones"
-      interviewer={{ name: "Sylvia Palmer" }}
+      interviewer={interviewer}
       onEdit={action("onEdit")}
       onDelete={action("onDelete")}
     />
@@ -175,4 +176,22 @@ storiesOf("Button", module)
   .add("Status", () => <Status message="Deleting" />)
   .add("Error", () => (
     <Error message="Could not delete appointment." onClose={action("onClose")} />
+  ))
+  .add("Create", () => (
+    <Form
+      interviewers={interviewers}
+      onSave={(name, interviewer) => action("onSave")(name, interviewer)}
+      onCancel={action("onCancel")}
+    />
+  ))
+  .add("Edit", () => (
+    <Form
+      name="John Doe"
+      interviewer={4}
+      interviewers={interviewers}
+      onSave={(name, interviewer) => action("onSave")(name, interviewer)}
+      onCancel={action("onCancel")}
+    />
   ));
+
+
