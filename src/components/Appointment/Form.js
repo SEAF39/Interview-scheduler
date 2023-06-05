@@ -4,11 +4,11 @@ import InterviewerList from 'components/InterviewerList';
 import Button from 'components/Button';
 
 const Form = (props) => {
-  const [name, setName] = useState(props.name || '');
+  const [student, setStudent] = useState(props.student || '');
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
 
   const handleNameChange = (event) => {
-    setName(event.target.value);
+    setStudent(event.target.value);
   };
 
   const handleInterviewerChange = (interviewerId) => {
@@ -16,7 +16,7 @@ const Form = (props) => {
   };
 
   const reset = () => {
-    setName('');
+    setStudent('');
     setInterviewer(null);
   };
 
@@ -34,7 +34,7 @@ const Form = (props) => {
             name="name"
             type="text"
             placeholder="Enter Student Name"
-            value={name}
+            value={student}
             onChange={handleNameChange}
           />
         </form>
