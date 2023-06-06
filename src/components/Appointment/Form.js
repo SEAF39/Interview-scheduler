@@ -7,14 +7,6 @@ const Form = (props) => {
   const [student, setStudent] = useState(props.student || '');
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
 
-  const handleNameChange = (event) => {
-    setStudent(event.target.value);
-  };
-
-  const handleInterviewerChange = (interviewerId) => {
-    setInterviewer(interviewerId);
-  };
-
   const reset = () => {
     setStudent('');
     setInterviewer(null);
@@ -25,23 +17,29 @@ const Form = (props) => {
     props.onCancel();
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Handle the form submission logic
+    // e.g. Call props.onSave to save the data
+  };
+
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
-        <form autoComplete="off">
+        <form autoComplete="off" onSubmit={handleSubmit}>
           <input
             className="appointment__create-input text--semi-bold"
             name="name"
             type="text"
             placeholder="Enter Student Name"
             value={student}
-            onChange={handleNameChange}
+            onChange={(event) => setStudent(event.target.value)}
           />
         </form>
         <InterviewerList
           interviewers={props.interviewers}
           value={interviewer}
-          onChange={handleInterviewerChange}
+          onChange={setInterviewer}
         />
       </section>
       <section className="appointment__card-right">
@@ -49,7 +47,7 @@ const Form = (props) => {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button confirm onClick={props.onSave}>
+          <Button onClick={() => props.onSave(student, interviewer)} confirm>
             Save
           </Button>
         </section>
