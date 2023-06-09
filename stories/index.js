@@ -3,7 +3,10 @@ import React, { Fragment } from "react";
 
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
+
 import "index.scss";
+import "components/Appointment/styles.scss";
+
 import Button from "components/Button";
 import DayListItem from '../src/components/DayListItem';
 import DayList from "components/DayList";
@@ -18,7 +21,6 @@ import Status from "components/Appointment/Status";
 import Error from "components/Appointment/Error";
 import Form from "components/Appointment/Form";
 
-import "components/Appointment/styles.scss";
 
 
 

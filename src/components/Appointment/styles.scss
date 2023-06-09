@@ -1,5 +1,4 @@
-/* styles.scss */
-@import "styles/variables.scss";
+/* styles.scss */@import "styles/variables.scss";
 @import "styles/mixins.scss";
 @import "styles/animations.scss";
 
@@ -107,8 +106,8 @@ $appointment-height: 11rem;
     }
   }
 
-  &:last-of-type &__add,
-  &:last-of-type &__card {
+  &:last-of-type .appointment__add,
+  &:last-of-type .appointment__card {
     display: none;
   }
 

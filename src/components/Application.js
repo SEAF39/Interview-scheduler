@@ -1,9 +1,26 @@
 /* Application.js */
-
-import React, { Component } from "react";
-import DayList from "./DayList";
-import Appointment from "./Appointment";
+import React, { useState } from "react";
 import "components/Application.scss";
+import DayList from "./DayList";
+import Appointment from './Appointment';
+
+const days = [
+  {
+    id: 1,
+    name: "Monday",
+    spots: 2,
+  },
+  {
+    id: 2,
+    name: "Tuesday",
+    spots: 5,
+  },
+  {
+    id: 3,
+    name: "Wednesday",
+    spots: 0,
+  },
+];
 
 const appointments = {
   "1": {
@@ -44,64 +61,33 @@ const appointments = {
   }
 };
 
-class Application extends Component {
-  state = {
-    day: "Monday",
-    days: ["Monday", "Tuesday", "Wednesday"],
-    appointments,
-    interviewers: {}
-  };
+export default function Application() {
+  const [value, setValue] = useState("Monday");
 
-  renderAppointments() {
-    const { day, appointments } = this.state;
-    const dailyAppointments = appointments[day];
-
-    if (!dailyAppointments) {
-      return null;
-    }
-
-    return dailyAppointments.map(appointment => (
-      <Appointment
-        key={appointment.id}
-        id={appointment.id}
-        time={appointment.time}
-        interview={appointment.interview}
-      />
-    ));
-  }
-
-  setDay = day => {
-    this.setState({ day });
-  };
-
-  render() {
-    const { days } = this.state;
-
-    return (
-      <main className="layout">
-        <section className="sidebar">
-          <img
-            className="sidebar--centered"
-            src="images/logo.png"
-            alt="Interview Scheduler"
-          />
-          <hr className="sidebar__separator sidebar--centered" />
-          <nav className="sidebar__menu">
-            <DayList days={days} value={this.state.day} onChange={this.setDay} />
-          </nav>
-          <img
-            className="sidebar__lhl sidebar--centered"
-            src="images/lhl.png"
-            alt="Lighthouse Labs"
-          />
-        </section>
-        <section className="schedule">
-          {this.renderAppointments()}
-          <Appointment key="last" time="5pm" />
-        </section>
-      </main>
-    );
-  }
+  return (
+    <main className="layout">
+      <section className="sidebar">
+        <img
+          className="sidebar--centered"
+          src="images/logo.png"
+          alt="Interview Scheduler"
+        />
+        <hr className="sidebar__separator sidebar--centered" />
+        <nav className="sidebar__menu">
+          <DayList days={days} value={value} onChange={setValue} />
+        </nav>
+        <img
+          className="sidebar__lhl sidebar--centered"
+          src="images/lhl.png"
+          alt="Lighthouse Labs"
+        />
+      </section>
+      <section className="schedule">
+        {Object.values(appointments).map(appointment => (
+          <Appointment key={appointment.id} {...appointment} />
+        ))}
+        <Appointment key="last" time="5pm" />
+      </section>
+    </main>
+  );
 }
-
-export default Application;
