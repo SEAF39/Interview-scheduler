@@ -4,7 +4,7 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
-
+import { getAppointmentsForDay } from "../helpers/selectors";
 
 export default function Application() {
   const [state, setState] = useState({
@@ -17,20 +17,25 @@ export default function Application() {
     setState((prev) => ({ ...prev, day }));
   };
 
-  const setDays = (days) => {
-    setState((prev) => ({ ...prev, days }));
-  };
-
   useEffect(() => {
-    axios
-      .get("http://localhost:8001/api/days")
-      .then((response) => {
-        setDays(response.data);
+    Promise.all([
+      axios.get("http://localhost:8001/api/days"),
+      axios.get("http://localhost:8001/api/appointments")
+    ])
+      .then((all) => {
+        const [daysResponse, appointmentsResponse] = all;
+        setState((prev) => ({
+          ...prev,
+          days: daysResponse.data,
+          appointments: appointmentsResponse.data
+        }));
       })
       .catch((error) => {
-        console.log("Error fetching days data:", error);
+        console.log("Error fetching data:", error);
       });
   }, []);
+
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
 
   return (
     <main className="layout">
@@ -42,11 +47,7 @@ export default function Application() {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList
-            days={state.days}
-            day={state.day}
-            setDay={setDay}
-          />
+          <DayList days={state.days} day={state.day} setDay={setDay} />
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
@@ -55,7 +56,7 @@ export default function Application() {
         />
       </section>
       <section className="schedule">
-        {Object.values(state.appointments).map((appointment) => (
+        {dailyAppointments.map((appointment) => (
           <Appointment key={appointment.id} {...appointment} />
         ))}
         <Appointment key="last" time="5pm" />
@@ -63,8 +64,3 @@ export default function Application() {
     </main>
   );
 }
-
-
-
-
-
