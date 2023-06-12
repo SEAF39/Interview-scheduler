@@ -4,13 +4,14 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
-import { getAppointmentsForDay } from "../helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "../helpers/selectors";
 
 export default function Application() {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: {}
   });
 
   const setDay = (day) => {
@@ -18,23 +19,44 @@ export default function Application() {
   };
 
   useEffect(() => {
-    Promise.all([
-      axios.get("http://localhost:8001/api/days"),
-      axios.get("http://localhost:8001/api/appointments")
-    ])
-      .then((all) => {
-        const [daysResponse, appointmentsResponse] = all;
-        setState((prev) => ({
-          ...prev,
+    const fetchAppointments = axios.get('http://localhost:8001/api/appointments');
+    const fetchDays = axios.get('http://localhost:8001/api/days');
+    const fetchInterviewers = axios.get('http://localhost:8001/api/interviewers');
+  
+    Promise.all([fetchDays, fetchAppointments, fetchInterviewers])
+      .then((responses) => {
+        const [daysResponse, appointmentsResponse, interviewersResponse] = responses;
+        console.log(daysResponse.data); // response from days API call
+        console.log(appointmentsResponse.data); // response from appointments API call
+        console.log(interviewersResponse.data); // response from interviewers API call
+        
+        // Update the state with the retrieved data
+        setState(prevState => ({
+          ...prevState,
           days: daysResponse.data,
-          appointments: appointmentsResponse.data
+          appointments: appointmentsResponse.data,
+          interviewers: interviewersResponse.data
         }));
       })
       .catch((error) => {
-        console.log("Error fetching data:", error);
+        console.log('Error:', error);
       });
   }, []);
 
+
+  const schedule = getAppointmentsForDay(state, state.day).map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
+  
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+      />
+    );
+  });
+  
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
   return (
