@@ -5,7 +5,6 @@ import axios from "axios";
 
 import "components/Application.scss";
 
-
 import DayList from "./DayList";
 import Appointment from "./Appointment";
 import {
@@ -31,9 +30,9 @@ export default function Application() {
       try {
         const [daysResponse, appointmentsResponse, interviewersResponse] =
           await Promise.all([
-            axios.get('http://localhost:8001/api/days'),
-            axios.get('http://localhost:8001/api/appointments'),
-            axios.get('http://localhost:8001/api/interviewers'),
+            axios.get("http://localhost:8001/api/days"),
+            axios.get("http://localhost:8001/api/appointments"),
+            axios.get("http://localhost:8001/api/interviewers"),
           ]);
 
         setState((prevState) => ({
@@ -43,7 +42,7 @@ export default function Application() {
           interviewers: interviewersResponse.data,
         }));
       } catch (error) {
-        console.log('Error:', error);
+        console.log("Error:", error);
       }
     };
 
@@ -67,22 +66,49 @@ export default function Application() {
     }));
   };
 
+  const cancelInterview = (id) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null,
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    setState((prevState) => ({
+      ...prevState,
+      appointments,
+    }));
+
+    return axios.delete(`/api/appointments/${id}`).then(() => {
+      setState({
+        ...state,
+        appointments,
+      });
+    });
+  };
+
   const interviewersList = getInterviewersForDay(state, state.day);
 
-  const schedule = getAppointmentsForDay(state, state.day).map((appointment) => {
-    const interview = getInterview(state, appointment.interview);
+  const schedule = getAppointmentsForDay(state, state.day).map(
+    (appointment) => {
+      const interview = getInterview(state, appointment.interview);
 
-    return (
-      <Appointment
-        key={appointment.id}
-        id={appointment.id}
-        time={appointment.time}
-        interview={interview}
-        interviewers={interviewersList}
-        bookInterview={bookInterview}
-      />
-    );
-  });
+      return (
+        <Appointment
+          key={appointment.id}
+          id={appointment.id}
+          time={appointment.time}
+          interview={interview}
+          interviewers={interviewersList}
+          bookInterview={bookInterview}
+          cancelInterview={cancelInterview}
+        />
+      );
+    }
+  );
 
   return (
     <main className="layout">
@@ -109,21 +135,6 @@ export default function Application() {
     </main>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
