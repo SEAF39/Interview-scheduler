@@ -91,7 +91,6 @@ export default function Appointment(props) {
       {mode === ERROR_DELETE && (
         <Error message="Could not delete appointment" onClose={back} />
       )}
-    
     </article>
   );
 }
