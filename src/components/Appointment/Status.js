@@ -1,7 +1,9 @@
 /* Status.js */
 import React from "react";
 
-const Status = (props) => {
+export default function Status({ mode }) {
+  const statusText = mode === "SAVING" ? "Saving" : "Deleting";
+
   return (
     <main className="appointment__card appointment__card--status">
       <img
@@ -9,9 +11,7 @@ const Status = (props) => {
         src="images/status.png"
         alt="Loading"
       />
-      <h1 className="text--semi-bold">{props.message}</h1>
+      <h1 className="text--semi-bold">{statusText}</h1>
     </main>
   );
-};
-
-export default Status;
+}

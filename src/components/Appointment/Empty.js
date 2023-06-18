@@ -1,18 +1,20 @@
 /* Empty.js */
+
 import React from "react";
 
-const Empty = (props) => {
+export default function Empty({ onAdd }) {
+  const handleAddClick = () => {
+    onAdd();
+  };
+
   return (
     <main className="appointment__add">
       <img
         className="appointment__add-button"
         src="images/add.png"
         alt="Add"
-        onClick={props.onAdd}
+        onClick={handleAddClick}
       />
     </main>
   );
-};
-
-export default Empty;
-
+}
