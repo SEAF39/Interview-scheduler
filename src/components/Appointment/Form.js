@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import InterviewerList from "components/InterviewerList";
 import Button from "components/Button";
+import PropTypes from "prop-types";
 
 export default function Form(props) {
   const [formData, setFormData] = useState({
@@ -52,7 +53,6 @@ export default function Form(props) {
         <InterviewerList
           interviewers={props.interviewers}
           interviewer={formData.interviewer}
-          value={formData.interviewer}
           onChange={(interviewer) =>
             setFormData((prevData) => ({ ...prevData, interviewer }))
           }
@@ -71,3 +71,18 @@ export default function Form(props) {
     </main>
   );
 }
+
+Form.propTypes = {
+  name: PropTypes.string,
+  interviewer: PropTypes.number,
+  interviewers: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      avatar: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  onSave: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+};
+
