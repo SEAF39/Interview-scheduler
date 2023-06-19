@@ -1,25 +1,25 @@
 /* Button.js */
-import React from 'react';
-import 'components/Button.scss';
+import React from "react";
+import classNames from "classnames";
+import "components/Button.scss";
 
-export default function Button(props) {
-  let buttonClass = 'button';
-
-  if (props.confirm) {
-    buttonClass += ' button--confirm';
-  }
-
-  if (props.danger) {
-    buttonClass += ' button--danger';
-  }
+export default function Button({ confirm, danger, onClick, disabled, children }) {
+  const buttonClass = classNames("button", {
+    "button--confirm": confirm,
+    "button--danger": danger
+  });
 
   return (
     <button
       className={buttonClass}
-      onClick={props.onClick}
-      disabled={props.disabled}
+      onClick={onClick}
+      disabled={disabled}
     >
-      {props.children}
+      {children}
     </button>
   );
 }
+
+Button.defaultProps = {
+  onClick: () => {} // Default empty click handler
+};
