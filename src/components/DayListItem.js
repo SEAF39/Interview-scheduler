@@ -1,22 +1,22 @@
 /* DayListItem.js */
 
 import React from "react";
-import classnames from "classnames";
+import classNames from "classnames";
 import "components/DayListItem.scss";
 
-export default function DayListItem(props) {
-  const dayClass = classnames("day-list__item", {
-    "day-list__item--selected": props.selected,
-    "day-list__item--full": props.spots === 0
+export default function DayListItem({ name, spots, selected, setDay }) {
+  const dayClass = classNames("day-list__item", {
+    "day-list__item--selected": selected,
+    "day-list__item--full": spots === 0
   });
 
-  const formatSpots = spot => {
-    if (spot === 0) {
+  const formatSpots = () => {
+    if (spots === 0) {
       return "no spots remaining";
-    } else if (spot === 1) {
-      return `${spot} spot remaining`;
+    } else if (spots === 1) {
+      return "1 spot remaining";
     } else {
-      return `${spot} spots remaining`;
+      return `${spots} spots remaining`;
     }
   };
 
@@ -24,46 +24,10 @@ export default function DayListItem(props) {
     <li
       className={dayClass}
       data-testid="day"
-      onClick={() => {
-        props.setDay(props.name);
-      }}
+      onClick={() => setDay(name)}
     >
-      <h2 className="text--regular">{props.name}</h2>
-      <h3 className="text--light">{formatSpots(props.spots)}</h3>
+      <h2 className="text--regular">{name}</h2>
+      <h3 className="text--light">{formatSpots()}</h3>
     </li>
   );
 }
-
-
-
-/* import React from "react";
-import classNames from "classnames";
-import "components/DayListItem.scss";
-
-export default function DayListItem(props) {
-  const dayClass = classNames("day-list__item", {
-    "day-list__item--selected": props.selected,
-    "day-list__item--full": !props.spots,
-  });
-
-  const formatSpots = (spots) => {
-    if (spots === 0) {
-      return "no spots remaining";
-    }
-    if (spots === 1) {
-      return "1 spot remaining";
-    }
-    if (spots > 1) {
-      return `${spots} spots remaining`;
-    }
-  };
-
-return (
-  <li className={dayClass} onClick={() => props.setDay(props.name)} selected={props.selected}>
-    <h2 className="text--regular">{props.name}</h2> 
-    <h3 className="text--light">{formatSpots()}</h3>
-  </li>
-);
-}
-
- */
