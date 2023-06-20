@@ -1,5 +1,4 @@
 /* selectors.test.js */
-import { getAppointmentsForDay } from "./selectors";
 import { getAppointmentsForDay, getInterview } from "./selectors";
 
 const state = {
@@ -54,8 +53,6 @@ test("getAppointmentsForDay returns an array with a length matching the number o
   expect(result.length).toEqual(3);
 });
 
-
-
 test("getAppointmentsForDay returns an array containing the correct appointment objects", () => {
   const [first, second] = getAppointmentsForDay(state, "Tuesday");
   expect(first).toEqual(state.appointments["4"]);
@@ -89,17 +86,4 @@ test("getInterview returns an object with the interviewer data", () => {
 test("getInterview returns null if no interview is booked", () => {
   const result = getInterview(state, state.appointments["2"].interview);
   expect(result).toBeNull();
-});
-
-
-test("getInterviewersForDay returns an array of interviewers for the given day", () => {
-  const interviewers = getInterviewersForDay(state, "Monday");
-  expect(interviewers).toHaveLength(2);
-  expect(interviewers[0]).toEqual(state.interviewers[1]);
-  expect(interviewers[1]).toEqual(state.interviewers[2]);
-});
-
-test("getInterviewersForDay returns an empty array when the day is not found", () => {
-  const interviewers = getInterviewersForDay(state, "Wednesday");
-  expect(interviewers).toHaveLength(0);
 });

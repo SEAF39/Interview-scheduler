@@ -27,7 +27,8 @@ export default function useApplicationData() {
         appointments: appointments.data,
         interviewers: interviewers.data
       }));
-    });
+    })
+    .catch(error => console.log(error));
   }, []);
 
   function calcSpot(day, days, appointments) {
@@ -107,4 +108,3 @@ export default function useApplicationData() {
     cancelInterview
   };
 }
-
